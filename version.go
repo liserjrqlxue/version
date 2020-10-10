@@ -12,9 +12,9 @@ var (
 )
 
 func LogVersion() {
-	log.Printf("Git Describe\t: %s\n", gitDescribe)
-	log.Printf("Build Time\t: %s\n", buildStamp)
-	log.Printf("Golang Version\t: %s\n", golangVersion)
+	log.Printf("Git Describe   : %s\n", gitDescribe)
+	log.Printf("Build Time     : %s\n", buildStamp)
+	log.Printf("Golang Version : %s\n", golangVersion)
 	var hostName, err = os.Hostname()
-	log.Printf("Hostname\t: %s%v\n", hostName, err)
+	log.Printf("Hostname       : %s%v\n", hostName, err)
 }
