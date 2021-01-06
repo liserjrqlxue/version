@@ -11,6 +11,7 @@ var (
 	golangVersion string
 )
 
+// LogVersion log out version info
 func LogVersion() {
 	log.Printf("Git Describe   : %s\n", gitDescribe)
 	log.Printf("Build Time     : %s\n", buildStamp)
