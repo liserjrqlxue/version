@@ -9,8 +9,22 @@ import (
 	"time"
 )
 
+var currentBranchAargs = [][]string{
+	{"branch", "--show-current"},
+	{"rev-parse", "--abbrev-ref", "HEAD"},
+	{"symbolic-ref", "--short", "HEAD"},
+	{"name-rev", "--name-only", "HEAD"},
+}
+
 func main() {
-	var gitBranch = strings.Trim(string(HandleError(exec.Command("git", "branch", "--show-current").Output()).([]byte)), "\n")
+	var gitBranch string
+	for _, args := range currentBranchAargs {
+		var currentBranch, err = exec.Command("git", args...).Output()
+		if err == nil {
+			gitBranch = strings.Trim(string(currentBranch), "\n")
+			break
+		}
+	}
 	var gitDescribe = gitBranch + ":" + strings.Trim(string(HandleError(exec.Command("git", "describe", "--tags").Output()).([]byte)), "\n")
 	var date = time.Now().Format("2006-01-02_15:04:05PM")
 	var goVersion = strings.Trim(string(HandleError(exec.Command("go", "version").Output()).([]byte)), "\n")
