@@ -33,7 +33,7 @@ func main() {
 			break
 		}
 	}
-	var gitDescribe = gitBranch + ":" + strings.Trim(string(HandleError(exec.Command("git", "describe", "--tags").Output()).([]byte)), "\n")
+	var gitDescribe = gitBranch + ":" + strings.Trim(string(HandleError(exec.Command("git", "describe", "--tags", "--dirty").Output()).([]byte)), "\n")
 	var date = time.Now().Format("2006-01-02_15:04:05PM")
 	var goVersion = strings.Trim(string(HandleError(exec.Command("go", "version").Output()).([]byte)), "\n")
 	var build = exec.Command("go", "build", "-x", "-ldflags", fmt.Sprintf("-X 'github.com/liserjrqlxue/version.gitDescribe=%s' -X 'github.com/liserjrqlxue/version.buildStamp=%s' -X 'github.com/liserjrqlxue/version.golangVersion=%s' %s", gitDescribe, date, goVersion, *ldflags))

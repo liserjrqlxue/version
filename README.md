@@ -5,7 +5,7 @@
 After assign version info when `go build`, log out version info when run
 
 ```
-gitDescribe=$(git branch --show-current):$(git describe --tags)
+gitDescribe=$(git branch --show-current):$(git describe --tags --dirty)
 golangVersion=$(go version)
 buildStamp=$(date '+%Y-%m-%d_%I:%M:%S%p')
 go build -ldflags "-X 'github.com/liserjrqlxue/version.gitDescribe=$gitDescribe' -X 'github.com/liserjrqlxue/version.buildStamp=$buildStamp -X 'github.com/liserjrqlxue/version.golangVersion=$golangVersion'"
