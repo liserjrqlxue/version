@@ -17,6 +17,11 @@ var currentBranchAargs = [][]string{
 	{"name-rev", "--name-only", "HEAD"},
 }
 
+var tagsArgs = [][]string{
+	{"describe", "--tags", "--dirty"},
+	{"rev-parse", "HEAD"},
+}
+
 var ldflags = flag.String(
 	"ldflags",
 	"",
@@ -33,7 +38,15 @@ func main() {
 			break
 		}
 	}
-	var gitDescribe = gitBranch + ":" + strings.Trim(string(HandleError(exec.Command("git", "describe", "--tags", "--dirty").Output()).([]byte)), "\n")
+	var gitTag string
+	for _, args := range tagsArgs {
+		var tag, err = exec.Command("git", args...).Output()
+		if err == nil {
+			gitTag = strings.Trim(string(tag), "\n")
+			break
+		}
+	}
+	var gitDescribe = gitBranch + ":" + gitTag
 	var date = time.Now().Format("2006-01-02_15:04:05PM")
 	var goVersion = strings.Trim(string(HandleError(exec.Command("go", "version").Output()).([]byte)), "\n")
 	var build = exec.Command("go", "build", "-x", "-ldflags", fmt.Sprintf("-X 'github.com/liserjrqlxue/version.gitDescribe=%s' -X 'github.com/liserjrqlxue/version.buildStamp=%s' -X 'github.com/liserjrqlxue/version.golangVersion=%s' %s", gitDescribe, date, goVersion, *ldflags))
